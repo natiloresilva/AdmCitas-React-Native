@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, FlatList} from 'react-native';
+import {Text, StyleSheet, View, FlatList, ScrollView} from 'react-native';
 import Cita from './components/Cita';
 import Formulario from './components/Formulario';
 
@@ -28,29 +28,31 @@ const App = () => {
     });
   };
   return (
-    <View style={styles.contenedor}>
-      <Text style={styles.titulo}>Administrador de citas</Text>
+    <ScrollView>
+      <View style={styles.contenedor}>
+        <Text style={styles.titulo}>Administrador de citas</Text>
 
-      <Formulario />
+        <Formulario />
 
-      <Text style={styles.titulo}>
-        {citas.length > 0
-          ? 'Gestiona tus pacientes'
-          : 'No hay citas, agrega una'}
-      </Text>
+        <Text style={styles.titulo}>
+          {citas.length > 0
+            ? 'Gestiona tus pacientes'
+            : 'No hay citas, agrega una'}
+        </Text>
 
-      <FlatList
-        data={citas}
-        renderItem={({item}) => (
-          <Cita item={item} eliminarPaciente={eliminarPaciente} />
-        )}
-        keyExtractor={(cita) => cita.id}
-      />
+        <FlatList
+          data={citas}
+          renderItem={({item}) => (
+            <Cita item={item} eliminarPaciente={eliminarPaciente} />
+          )}
+          keyExtractor={(cita) => cita.id}
+        />
 
-      {/* {citas.map(cita => (<View>
+        {/* {citas.map(cita => (<View>
         <Text key={id}>{cita.paciente}</Text>
      </View>))} */}
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
