@@ -7,10 +7,12 @@ import {
   Button,
   TouchableHighlight,
   Alert,
+  ScrollView,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import shortid from 'shortid';
 
-const Formulario = () => {
+const Formulario = ({citas, setCitas, guardarMostrarForm}) => {
   const [paciente, guardarPaciente] = useState('');
   const [propietario, guardarPropietario] = useState('');
   const [telefono, guardarTelefono] = useState('');
@@ -68,6 +70,20 @@ const Formulario = () => {
       mostrarAlerta();
       return;
     }
+    //Crear una nueva cita
+    const cita = {paciente, propietario, telefono, fecha, hora, sintomas};
+
+    cita.id = shortid.generate();
+
+    //Agregar al state
+    const citaNuevas = [...citas, cita];
+    setCitas(citaNuevas);
+
+    //Ocultar el formulario
+
+    guardarMostrarForm(false);
+
+    //Resetear el formulario
   };
 
   //Muestra la alerta si falla la validación
@@ -85,91 +101,95 @@ const Formulario = () => {
 
   return (
     <>
-      <View style={styles.formulario}>
-        <View>
-          <Text style={styles.label}>Paciente:</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(texto) => guardarPaciente(texto)}
-          />
-        </View>
+      <ScrollView>
+        <View style={styles.formulario}>
+          <View>
+            <Text style={styles.label}>Paciente:</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(texto) => guardarPaciente(texto)}
+            />
+          </View>
 
-        <View>
-          <Text style={styles.label}>Dueño:</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(texto) => guardarPropietario(texto)}
-          />
-        </View>
+          <View>
+            <Text style={styles.label}>Dueño:</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(texto) => guardarPropietario(texto)}
+            />
+          </View>
 
-        <View>
-          <Text style={styles.label}>Teléfono de contacto:</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(texto) => guardarTelefono(texto)}
-            keyboardType="numeric"
-          />
-        </View>
+          <View>
+            <Text style={styles.label}>Teléfono de contacto:</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(texto) => guardarTelefono(texto)}
+              keyboardType="numeric"
+            />
+          </View>
 
-        <View>
-          <Text style={styles.label}>Fecha:</Text>
-          <Button title="Seleccionar fecha" onPress={showDatePicker} />
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={confirmarFecha}
-            onCancel={hideDatePicker}
-            locale="es_ES"
-            headerTextIOS="Elige la fecha"
-            cancelTextIOS="Cancelar"
-            confirmTextIOS="Confirmar"
-          />
-          <Text>{fecha}</Text>
-        </View>
+          <View>
+            <Text style={styles.label}>Fecha:</Text>
+            <Button title="Seleccionar fecha" onPress={showDatePicker} />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={confirmarFecha}
+              onCancel={hideDatePicker}
+              locale="es_ES"
+              headerTextIOS="Elige la fecha"
+              cancelTextIOS="Cancelar"
+              confirmTextIOS="Confirmar"
+            />
+            <Text>{fecha}</Text>
+          </View>
 
-        <View>
-          <Text style={styles.label}>Hora:</Text>
-          <Button title="Seleccionar hora" onPress={showTimePicker} />
-          <DateTimePickerModal
-            isVisible={isTimePickerVisible}
-            mode="time"
-            onConfirm={confirmarHora}
-            onCancel={hideTimePicker}
-            locale="es_ES"
-            headerTextIOS="Elige una hora"
-            cancelTextIOS="Cancelar"
-            confirmTextIOS="Confirmar"
-            is24Hour
-          />
-          <Text>{hora}</Text>
-        </View>
+          <View>
+            <Text style={styles.label}>Hora:</Text>
+            <Button title="Seleccionar hora" onPress={showTimePicker} />
+            <DateTimePickerModal
+              isVisible={isTimePickerVisible}
+              mode="time"
+              onConfirm={confirmarHora}
+              onCancel={hideTimePicker}
+              locale="es_ES"
+              headerTextIOS="Elige una hora"
+              cancelTextIOS="Cancelar"
+              confirmTextIOS="Confirmar"
+              is24Hour
+            />
+            <Text>{hora}</Text>
+          </View>
 
-        <View>
-          <Text style={styles.label}>Síntomas:</Text>
-          <TextInput
-            multiline
-            style={styles.input}
-            onChangeText={(texto) => guardarSintomas(texto)}
-          />
-        </View>
+          <View>
+            <Text style={styles.label}>Síntomas:</Text>
+            <TextInput
+              multiline
+              style={styles.input}
+              onChangeText={(texto) => guardarSintomas(texto)}
+            />
+          </View>
 
-        <View>
-          <TouchableHighlight
-            onPress={() => crearNuevaCita()}
-            style={styles.btnSubmit}>
-            <Text style={styles.textoBtn}>Crear nueva cita </Text>
-          </TouchableHighlight>
+          <View>
+            <TouchableHighlight
+              onPress={() => crearNuevaCita()}
+              style={styles.btnSubmit}>
+              <Text style={styles.textoBtn}>Guardar nueva cita </Text>
+            </TouchableHighlight>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   formulario: {
+    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginHorizontal: '2.5%',
+    marginVertical: '2.5%',
   },
   label: {
     fontWeight: 'bold',
@@ -180,10 +200,7 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 10,
     height: 50,
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderStyle: 'solid',
+    backgroundColor: '#A2D5E1',
   },
 
   btnSubmit: {

@@ -20,8 +20,20 @@ const Cita = ({item, eliminarPaciente}) => {
       </View>
 
       <View>
+        <Text style={styles.label}>Teléfono: </Text>
+        <Text style={styles.texto}>{item.telefono}</Text>
+      </View>
+
+      <View>
         <Text style={styles.label}>Síntomas: </Text>
         <Text style={styles.texto}>{item.sintomas}</Text>
+      </View>
+
+      <View>
+        <Text style={styles.label}>Fecha y Hora de ingreso: </Text>
+        <Text style={styles.texto}>
+          {item.fecha}, {item.hora}
+        </Text>
       </View>
 
       <View>
@@ -43,12 +55,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,
+    marginBottom: 20,
+    marginHorizontal: '2.5%',
   },
 
   label: {
     fontWeight: 'bold',
     fontSize: 18,
-    marginTop: 20,
+    marginTop: 10,
   },
 
   texto: {
